@@ -13,5 +13,7 @@ namespace FOApi
         public double Amount { get; set; }
         public int NoOfServing { get; set; }
         public double TotalAmount { get; set; }
+
+        public virtual Tblorder Order { get; set; }
     }
 }

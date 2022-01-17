@@ -26,7 +26,6 @@ namespace FOApi
         public virtual DbSet<Tblpayment> Tblpayments { get; set; }
         public virtual DbSet<Tblrating> Tblratings { get; set; }
         public virtual DbSet<Tblsiteinfo> Tblsiteinfos { get; set; }
-       // public virtual DbSet<Tbluser> Tblusers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -97,22 +96,20 @@ namespace FOApi
             modelBuilder.Entity<Tblmenu>(entity =>
             {
                 entity.HasKey(e => e.MenuId)
-                    .HasName("PK__tblmenu__4CA0FADC0F36B51D");
+                    .HasName("PK__tblmenu__4CA0FADCD53B6BFE");
 
                 entity.ToTable("tblmenu");
-
-                entity.HasIndex(e => e.MenuTypeId, "menu_type_id");
 
                 entity.Property(e => e.MenuId).HasColumnName("menu_id");
 
                 entity.Property(e => e.Ingredients)
-                    .IsRequired()
                     .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("ingredients");
 
                 entity.Property(e => e.MenuImage)
-                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false)
                     .HasColumnName("menu_image");
 
                 entity.Property(e => e.MenuName)
@@ -208,6 +205,12 @@ namespace FOApi
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
                 entity.Property(e => e.TotalAmount).HasColumnName("total_amount");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.Tblorderdetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tblorderdetails_tblorder");
             });
 
             modelBuilder.Entity<Tblpayment>(entity =>
@@ -311,46 +314,6 @@ namespace FOApi
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
             });
-
-            //modelBuilder.Entity<Tbluser>(entity =>
-            //{
-            //    entity.HasKey(e => e.UserId)
-            //        .HasName("PK__tbluser__B9BE370FD2E31C69");
-
-            //    entity.ToTable("tbluser");
-
-            //    entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            //    entity.Property(e => e.Contact)
-            //        .IsRequired()
-            //        .HasMaxLength(50)
-            //        .IsUnicode(false)
-            //        .HasColumnName("contact");
-
-            //    entity.Property(e => e.EmailAddress)
-            //        .IsRequired()
-            //        .HasMaxLength(50)
-            //        .IsUnicode(false)
-            //        .HasColumnName("email_address");
-
-            //    entity.Property(e => e.FullName)
-            //        .IsRequired()
-            //        .HasMaxLength(100)
-            //        .IsUnicode(false)
-            //        .HasColumnName("full_name");
-
-            //    entity.Property(e => e.Password)
-            //        .IsRequired()
-            //        .HasMaxLength(30)
-            //        .IsUnicode(false)
-            //        .HasColumnName("password");
-
-            //    entity.Property(e => e.Username)
-            //        .IsRequired()
-            //        .HasMaxLength(30)
-            //        .IsUnicode(false)
-            //        .HasColumnName("username");
-            //});
 
             OnModelCreatingPartial(modelBuilder);
         }

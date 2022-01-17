@@ -11,9 +11,9 @@ namespace FOApi
         public string MenuName { get; set; }
         public double Price { get; set; }
         public int MenuTypeId { get; set; }
-        public byte[] MenuImage { get; set; }
+        public string MenuImage { get; set; }
         public string Ingredients { get; set; }
-        public int MenuStatus { get; set; }
+        public int? MenuStatus { get; set; }
 
         public virtual Tblmenutype MenuType { get; set; }
     }
